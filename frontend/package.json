@@ -1,16 +1,24 @@
 {
-  "name": "commath-pj",
+  "name": "my-app",
   "version": "0.1.0",
-  "homepage": "https://Winexerox.github.io/commath-pj/",
+  "homepage": "https://winexerox.github.io/commath-pj/",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "axios": "^0.20.0",
+    "bootstrap": "^4.5.3",
+    "deploy": "^1.0.3",
     "gh-pages": "^3.1.0",
+    "history": "^5.0.0",
     "react": "^16.13.1",
+    "react-bootstrap": "^1.3.0",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.3"
+    "react-router": "^5.2.0",
+    "react-router-dom": "^6.0.0-beta.0",
+    "react-scripts": "3.4.3",
+    "reactstrap": "^8.6.0"
   },
   "scripts": {
     "predeploy": "npm run build",
