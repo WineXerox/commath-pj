@@ -13,25 +13,28 @@ import {
 } from "reactstrap";
 import "../App.css";
 import { useNavigate } from "react-router-dom";
-import { getInterpolation } from "../functions/function";
+import { getElimination } from "../functions/function";
 
-function Interpolation() {
+function Elimination() {
   const navigate = useNavigate();
-  const [x, setx] = useState();
-  const [xi1, setxi1] = useState();
-  const [xi2, setxi2] = useState();
-  const [xi3, setxi3] = useState();
-  const [xi4, setxi4] = useState();
-  const [xi5, setxi5] = useState();
-  const [xi6, setxi6] = useState();
-  const [yi1, setyi1] = useState();
-  const [yi2, setyi2] = useState();
-  const [yi3, setyi3] = useState();
-  const [yi4, setyi4] = useState();
-  const [yi5, setyi5] = useState();
-  const [yi6, setyi6] = useState();
+  const [a00, seta00] = useState();
+  const [a01, seta01] = useState();
+  const [a02, seta02] = useState();
+  const [a10, seta10] = useState();
+  const [a11, seta11] = useState();
+  const [a12, seta12] = useState();
+  const [a20, seta20] = useState();
+  const [a21, seta21] = useState();
+  const [a22, seta22] = useState();
 
-  const [result, setresult] = useState();
+  const [b1, setb1] = useState();
+  const [b2, setb2] = useState();
+  const [b3, setb3] = useState();
+
+  const [x0, setx0] = useState();
+  const [x1, setx1] = useState();
+  const [x2, setx2] = useState();
+
 
   const back = () => {
     navigate("/");
@@ -39,78 +42,196 @@ function Interpolation() {
 
   const generate = () => {
     const data = {
-      x:x,
-      xi:[xi1,xi2,xi3,xi4,xi5,xi6],
-      yi:[yi1,yi2,yi3,yi4,yi5,yi6]
+      A:[[a00,a01,a02],[a10,a11,a12],[a20,a21,a22]],
+      b:[b1,b2,b3]
       
     };
-    getInterpolation(data).then((res) => {
-        setresult(`วินาทีที่ ${x} จะมีความเร็วประมาณ ${res}`)
+    getElimination(data).then((res) => {
+      setx0(res[0])
+      setx1(res[1])
+      setx2(res[2])
     });
   };
 
   return (
     <div>
       <Row style={{ marginTop: "5%" }}>
-        <Col sm="3"></Col>
-        <Col sm="6">
+        <Col sm="4"></Col>
+        <Col sm="4">
         <div className="text-center">
-        <Card style={{ marginBottom : "20px",marginTop: "10px", marginRight: "0px",margin: "10",backgroundColor: "#009933" }}>
-           <h2 style={{ marginTop: "20px", marginRight: "20px" }}>บทที่ 3 Interpolation</h2>
+        <Card style={{ marginBottom : "20px",marginTop: "10px", marginRight: "0px",margin: "10",backgroundColor: "#e60000" }}>
+           <h2 style={{ marginTop: "20px", marginRight: "20px" }}>บทที่ 2 Linear Equations</h2>
         </Card>
         </div>
-        <div >
-            <Card style={{ marginBottom : "20px",marginTop: "10px", marginRight: "0px",margin: "10",backgroundColor: "#F1F3CE"}}>
-            <div className="text-center">
-              <h5>Quadratic Interpolation</h5>
-              <p>y(x)=L0(x)y0+L1(x)y1+L2(x)y2</p>
-              <p>ตัวอย่างข้อมูล :</p>
-                <p>t = 5</p>
-                <p>x = [ 0, 8, 14, 20, 23, 30 ]</p>
-                <p>y = [ 0, 50, 96, 110, 100, 86 ]</p>
-            </div>    
-            </Card>
+        <div className="text-center">
+        <Card style={{ marginBottom : "20px",marginTop: "10px", marginRight: "0px",margin: "10",backgroundColor: "#F1F3CE" }}>
+        <h4>Elimination Phase</h4>
+          <p>Ax=b</p>
+          <p>A[i,j]=A[i,j]−λA[k,j],j=k,k+1,...,n</p>
+          <p>bi=bi−λbk</p>
+          <h4>Back Substitution</h4>
+          <p>Ux=c</p>
+          <p>หลังจาก elimination phase ไปแล้วจะได้ U=A,c=b</p>
+          <p>จึงเขียนใหม่ได้เป็น</p>
+          <p>x[k]=b[k]−(∑(j=k+1)=>(n)(A[k,j]*x[j]))*1/A[k,k]</p>
+          <p>ตัวอย่างข้อมูล :</p>
+          <p>ใช้ Elimination Phase คำนวณเพื่อหาคำตอบของ Ax=b</p>
+          <p>A: [ [ 6 -4 1 ]
+                  [ -4 6 -4 ]
+                  [ 1 -4 6 ] ]
+          </p>
+          <p>b: [-14 36 6 ]</p>
+        </Card>
+
         </div>
-       
           <Card style={{ alignItems: "center" }}>
-            <Row style={{ marginTop: "50px" }}>
-              <Col></Col>
-            </Row>
+
 
             <Row>
               <div className="text-center">
+                <h3 style={{marginTop:50}}>A</h3>
                 <Row>
-                  <h3 style={{ marginTop: "20px", marginRight: "20px" }}>t:</h3>
                   <Input
                     style={{
                       marginTop: "20px",
                       marginBottom: "20px",
                       width:60,
                     }}
-                    value={x}
-                    onChange={(e) => setx(e.target.value)}
+                    value={a00}
                     type="text"
                     name="bit2string"
                     id="bit2string"
+                    onChange={(e) => seta00(e.target.value)}
+                  />
+                  <Input
+                    style={{
+                      marginLeft: "20px",
+                      marginTop: "20px",
+                      marginBottom: "20px",
+                      width: 60,
+                    }}
+                    value={a01}
+                    type="text"
+                    name="bit2string"
+                    id="bit2string"
+                    onChange={(e) => seta01(e.target.value)}
+                  />
+                  <Input
+                    style={{
+                      marginLeft: "20px",
+                      marginTop: "20px",
+                      marginBottom: "20px",
+                      width:60,
+                    }}
+                    value={a02}
+                    type="text"
+                    name="bit2string"
+                    id="bit2string"
+                    onChange={(e) => seta02(e.target.value)}
+                  />
+                </Row>
+
+                <Row>
+                  <Input
+                    style={{
+                      marginTop: "20px",
+                      marginBottom: "20px",
+                      width:60,
+                    }}
+                    value={a10}
+                    type="text"
+                    name="bit2string"
+                    id="bit2string"
+                    onChange={(e) => seta10(e.target.value)}
+                  />
+                  <Input
+                    style={{
+                      marginLeft: "20px",
+                      marginTop: "20px",
+                      marginBottom: "20px",
+                      width:60,
+                    }}
+                    value={a11}
+                    type="text"
+                    name="bit2string"
+                    id="bit2string"
+                    onChange={(e) => seta11(e.target.value)}
+                  />
+                  <Input
+                    style={{
+                      marginLeft: "20px",
+                      marginTop: "20px",
+                      marginBottom: "20px",
+                      width:60,
+                    }}
+                    value={a12}
+                    type="text"
+                    name="bit2string"
+                    id="bit2string"
+                    onChange={(e) => seta12(e.target.value)}
+                  />
+                </Row>
+
+                <Row>
+                  <Input
+                    style={{
+                      marginTop: "20px",
+                      marginBottom: "20px",
+                      width:60,
+                    }}
+                    value={a20}
+                    type="text"
+                    name="bit2string"
+                    id="bit2string"
+                    onChange={(e) => seta20(e.target.value)}
+                  />
+                  <Input
+                    style={{
+                      marginLeft: "20px",
+                      marginTop: "20px",
+                      marginBottom: "20px",
+                      width:60,
+                    }}
+                    value={a21}
+                    type="text"
+                    name="bit2string"
+                    id="bit2string"
+                    onChange={(e) => seta21(e.target.value)}
+                  />
+                  <Input
+                    style={{
+                      marginLeft: "20px",
+                      marginTop: "20px",
+                      marginBottom: "20px",
+                      width:60,
+                    }}
+                    value={a22}
+                    type="text"
+                    name="bit2string"
+                    id="bit2string"
+                    onChange={(e) => seta22(e.target.value)}
+                  />
+                </Row>
+              </div>
+
+              <div className="text-center" style={{ marginLeft: "100px" }}>
+              <h3 style={{marginTop:50}}>B</h3>
+                <Row>
+                  <Input
+                    style={{
+                      marginLeft: "20px",
+                      marginTop: "20px",
+                      marginBottom: "20px",
+                      width:60,
+                    }}
+                    value={b1}
+                    type="text"
+                    name="bit2string"
+                    id="bit2string"
+                    onChange={(e) => setb1(e.target.value)}
                   />
                 </Row>
                 <Row>
-                  <h3 style={{ marginTop: "20px", marginRight: "20px" }}>
-                    xi:
-                  </h3>
-
-                  <Input
-                    style={{
-                      marginTop: "20px",
-                      marginBottom: "20px",
-                      width:60,
-                    }}
-                    value={xi1}
-                    onChange={(e) => setxi1(e.target.value)}
-                    type="text"
-                    name="bit2string"
-                    id="bit2string"
-                  />
                   <Input
                     style={{
                       marginLeft: "20px",
@@ -118,83 +239,14 @@ function Interpolation() {
                       marginBottom: "20px",
                       width:60,
                     }}
-                    value={xi2}
-                    onChange={(e) => setxi2(e.target.value)}
+                    value={b2}
                     type="text"
                     name="bit2string"
                     id="bit2string"
-                  />
-                  <Input
-                    style={{
-                      marginLeft: "20px",
-                      marginTop: "20px",
-                      marginBottom: "20px",
-                      width:60,
-                    }}
-                    value={xi3}
-                    onChange={(e) => setxi3(e.target.value)}
-                    type="text"
-                    name="bit2string"
-                    id="bit2string"
-                  />
-                  <Input
-                    style={{
-                      marginLeft: "20px",
-                      marginTop: "20px",
-                      marginBottom: "20px",
-                      width:60,
-                    }}
-                    value={xi4}
-                    onChange={(e) => setxi4(e.target.value)}
-                    type="text"
-                    name="bit2string"
-                    id="bit2string"
-                  />
-                  <Input
-                    style={{
-                      marginLeft: "20px",
-                      marginTop: "20px",
-                      marginBottom: "20px",
-                      width:60,
-                    }}
-                    value={xi5}
-                    onChange={(e) => setxi5(e.target.value)}
-                    type="text"
-                    name="bit2string"
-                    id="bit2string"
-                  />
-                  <Input
-                    style={{
-                      marginLeft: "20px",
-                      marginTop: "20px",
-                      marginBottom: "20px",
-                      width:60,
-                    }}
-                    value={xi6}
-                    onChange={(e) => setxi6(e.target.value)}
-                    type="text"
-                    name="bit2string"
-                    id="bit2string"
-                    // onChange={(e) => setxi6(e.target.value)}
+                    onChange={(e) => setb2(e.target.value)}
                   />
                 </Row>
                 <Row>
-                  <h3 style={{ marginTop: "20px", marginRight: "20px" }}>
-                    yi:
-                  </h3>
-
-                  <Input
-                    style={{
-                      marginTop: "20px",
-                      marginBottom: "20px",
-                      width:60,
-                    }}
-                    value={yi1}
-                    onChange={(e) => setyi1(e.target.value)}
-                    type="text"
-                    name="bit2string"
-                    id="bit2string"
-                  />
                   <Input
                     style={{
                       marginLeft: "20px",
@@ -202,72 +254,18 @@ function Interpolation() {
                       marginBottom: "20px",
                       width:60,
                     }}
-                    value={yi2}
-                    onChange={(e) => setyi2(e.target.value)}
+                    value={b3}
                     type="text"
                     name="bit2string"
                     id="bit2string"
-                  />
-                  <Input
-                    style={{
-                      marginLeft: "20px",
-                      marginTop: "20px",
-                      marginBottom: "20px",
-                      width:60,
-                    }}
-                    value={yi3}
-                    onChange={(e) => setyi3(e.target.value)}
-                    type="text"
-                    name="bit2string"
-                    id="bit2string"
-                  />
-                  <Input
-                    style={{
-                      marginLeft: "20px",
-                      marginTop: "20px",
-                      marginBottom: "20px",
-                      width:60,
-                    }}
-                    value={yi4}
-                    onChange={(e) => setyi4(e.target.value)}
-                    type="text"
-                    name="bit2string"
-                    id="bit2string"
-                  />
-                  <Input
-                    style={{
-                      marginLeft: "20px",
-                      marginTop: "20px",
-                      marginBottom: "20px",
-                      width:60,
-                    }}
-                    value={yi5}
-                    onChange={(e) => setyi5(e.target.value)}
-                    type="text"
-                    name="bit2string"
-                    id="bit2string"
-                  />
-                  <Input
-                    style={{
-                      marginLeft: "20px",
-                      marginTop: "20px",
-                      marginBottom: "20px",
-                      width:60,
-                    }}
-                    value={yi6}
-                    onChange={(e) => setyi6(e.target.value)}
-                    type="text"
-                    name="bit2string"
-                    id="bit2string"
-                    // onChange={(e) => setxi6(e.target.value)}
+                    onChange={(e) => setb3(e.target.value)}
                   />
                 </Row>
               </div>
             </Row>
-
             <Row style={{ marginBottom: "30px" }}>
               <Col sm="8">
-                <Button onClick={generate} color="success">
+                <Button onClick={generate} color="danger">
                   <div style={{ width: 300 }}>
                     <h3 style={{ marginTop: "10px" }}>คำนวณ</h3>
                   </div>
@@ -282,19 +280,26 @@ function Interpolation() {
               </Col>
             </Row>
           </Card>
-          <div>
-              <Card style={{  marginBottom : "20px",marginTop: "10px", marginRight: "0px",margin: "10",backgroundColor: "#F1F3CE" }}>
-              <div className="text-center">
-                <h4 style={{ marginBottom: "10px" }}>ผลลัพธ์ : {result}</h4>
-              </div>     
-              </Card>
-          </div>
+          <div className="text-center">
+          <Card style={{  marginBottom : "20px",marginTop: "10px", marginRight: "0px",margin: "10",backgroundColor: "#F1F3CE" }}>
+            
+              <h4 style={{ marginTop: "10px", marginLeft: "10px" }} >ผลลัพธ์ :</h4>
+                <h4 style={{marginBottom: "10px",marginLeft:"10px" }}>
+                  x0 :  {x0}
+                  </h4>
+                  <h4 style={{marginBottom: "10px",marginLeft:"10px" }}>
+                  x1 : {x1}  
+                  </h4>
+                  <h4 style={{marginBottom: "10px",marginLeft:"10px" }}>
+                  x2 :  {x2}
+                  </h4>
+        </Card>
+        </div>
         </Col>
 
-        <Col sm="3"></Col>
+        <Col sm="4"></Col>
       </Row>
     </div>
   );
 }
-
-export default Interpolation;
+export default Elimination;
